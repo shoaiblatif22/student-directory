@@ -28,10 +28,22 @@ def print_footer(students)
 #its important that print() doesnt add new line characters
 end 
 
+def print_filtered(students, letter)
+  students.each_with_index do |student, index|
+    if student[:name][0].downcase == letter.downcase
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  end
+end
+
 
 students = input_students
 print_header
 print(students)
 print_footer(students)
+
+puts "Please enter a letter to filter by:"
+letter = gets.chomp
+print_filtered(students, letter)
 
 
