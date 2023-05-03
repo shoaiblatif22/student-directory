@@ -5,7 +5,13 @@ def input_students
   students = []
   name = gets.chomp 
   while !name.empty? do
-    students << {name: name, cohort: :november}
+    puts "Enter #{name}'s hobby:"
+    hobby = gets.chomp
+    puts "Enter #{name}'s country of birth:"
+    birth_country = gets.chomp
+    puts "Enter #{name}'s height (in cm):"
+    height = gets.chomp
+    students << {name: name, cohort: :november, hobby: hobby, birth_country: birth_country, height: height }
     puts "Now we have #{students.count} students"
     name = gets.chomp
   end
@@ -13,18 +19,23 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "---------"
+  puts "The students of Villains Academy".center(50)
+  puts "---------".center(50)
 end 
 
-def print(students)  
-  students.each_with_index do |students, index|
-    puts "#{index + 1}. #{students[:name]} (#{students[:cohort]} cohort)"
+def print(students)
+  index = 0  
+  while index < students.length
+    student = students[index]
+    puts "#{index + 1}. #{student[:name]}, #{student[:cohort]} (cohort), #{student[:hobby]} (hobby), #{student[:birth_country]}, #{student[:height]}cm"
+    index += 1
   end
-end 
+end
+
+  
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students "
+  puts "Overall, we have #{students.count} great students ".center(50)
 #its important that print() doesnt add new line characters
 end 
 
@@ -41,16 +52,17 @@ end
 
 
 def print_short_names(students)
-  students.each_with_index do |student, index|
+  puts "Here is a list of students who have less than 12 characters in their name.".center(50)
+  index = 0
+  while index < students.length
+    student = students[index]
     if student[:name].length < 12
       puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
+    index += 1
   end
 end
 
-def print_footertwo(students)
-  puts "Here is a list of students who have less than 12 characters in their name."
-end
 
 
 
@@ -60,7 +72,7 @@ print_header
 print(students)
 print_footer(students)
 print_short_names(students)
-print_footertwo(students)
+
 =begin
 puts "Please enter a letter to filter by:"
 letter = gets.chomp
