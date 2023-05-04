@@ -73,9 +73,9 @@ print(students)
 print_footer(students)
 print_short_names(students)
 
-=begin
+
 puts "Please enter a letter to filter by:"
 letter = gets.chomp
 print_filtered(students, letter)
-=end
+
 
