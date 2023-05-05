@@ -73,7 +73,7 @@ def print_students_list()
     puts "There are no students to display"
     return
   end
-  
+
   cohorts = @students.map {|student| student[:cohort]}.uniq
   cohorts.each do |cohort|
     puts "#{cohort} cohort:".center(50)
@@ -86,7 +86,7 @@ def print_students_list()
 end 
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students ".center(50)
+  puts "Overall, we have #{@students.count} great students ".center(50)
 end 
 
 def save_students
