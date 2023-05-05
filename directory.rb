@@ -1,3 +1,5 @@
+require 'date'
+
 @students = []
 
 def print_menu
@@ -32,17 +34,22 @@ def input_students
   puts "To finish, just hit return twice"
   name = STDIN.gets.chomp 
   while !name.empty? do
-    puts "Enter #{name}'s cohort:"
+    puts "Enter #{name}'s cohort (e.g. November):"
     cohort = STDIN.gets.chomp
-    cohort = :default if cohort.empty?
-    while !Date::MONTHNAMES.include?(cohort.capitalize) do
-      puts "Invalid cohort entered, please enter a valid month:"
+    while !Date::MONTHNAMES.include?(cohort.capitalize) do # check if cohort is a valid month
+      puts "Please enter a valid month:"
       cohort = STDIN.gets.chomp
     end
-    @student << {name: name, cohort: cohort.to_sym}
+    puts "Enter #{name}'s hobby:"
+    hobby = gets.chomp
+    puts "Enter #{name}'s country of birth:"
+    birth_country = gets.chomp
+    puts "Enter #{name}'s height (in cm):"
+    height = gets.chomp
+    @students << {name: name, cohort: cohort.to_sym, hobby: hobby, birth_country: birth_country, height: height }
     if @students.count == 1
-      puts "now we have 1 student"
-    else 
+      puts "Now we have 1 student"
+    else
       puts "Now we have #{student.count} students"
     end
     save_students
