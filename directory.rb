@@ -69,6 +69,11 @@ def print_header
 end 
 
 def print_students_list()
+  if @students.empty?
+    puts "There are no students to display"
+    return
+  end
+  
   cohorts = @students.map {|student| student[:cohort]}.uniq
   cohorts.each do |cohort|
     puts "#{cohort} cohort:".center(50)
