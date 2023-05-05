@@ -1,18 +1,5 @@
 @students = []
 
-File.open("students.csv", "w")
-
-def load_students
-  if File.exist?("students.csv")
-      file = File.open("students.csv", "r")
-      file.readlines.each do |line|
-        name, cohort, hobby, birth_country, height = line.chomp.split(",")
-        @student << {name: name, cohort: cohort.to_sym}
-      end
-      file.close
-    end
-  end
-
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
@@ -21,11 +8,12 @@ def print_menu
   puts "9. Exit"
 end 
 
-def print_students_list()
-  print_header
-  print(@students)
-  print_footer(@students)
-end 
+def interactive_menu
+  loop do
+    print_menu
+    process(STDIN.gets.chomp)
+  end
+end
 
 def process(selection)
   case selection
@@ -39,22 +27,10 @@ def process(selection)
   end
 end
 
-def interactive_menu
-  loop do
-    print_menu
-    process(gets.chomp)
-  end
-end
-
-def show_students
-  print_header
-  print_students_list
-  print_footer
-end
-
 def input_students
   puts "Please enter the names of the students"
-  name = gets.chomp 
+  puts "To finish, just hit return twice"
+  name = STDIN.gets.chomp 
   while !name.empty? do
     puts "Enter #{name}'s hobby:"
     hobby = gets.chomp
@@ -65,12 +41,33 @@ def input_students
     @students << {name: name, cohort: :november, hobby: hobby, birth_country: birth_country, height: height }
     puts "Now we have #{@students.count} students"
     save_students
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
 end
 
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def print_header
+  puts "The students of Villains Academy".center(50)
+  puts "---------".center(50)
+end 
+
+def print_students_list()
+  @students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  end
+end 
+
+def print_footer(students)
+  puts "Overall, we have #{students.count} great students ".center(50)
+end 
+
 def save_students
-  file = File.open("students.csv", "a")
+  file = File.open("students.csv", "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -79,30 +76,29 @@ def save_students
   file.close
 end
 
-def print_header
-  puts "The students of Villains Academy".center(50)
-  puts "---------".center(50)
-end 
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
+  file.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      @students << {name: name, cohort: cohort.to_sym}
+    end
+    file.close
+  end
 
-def print(students)
-  index = 0  
-  while index < students.length
-    student = students[index]
-    puts "#{index + 1}. #{student[:name]}, #{student[:cohort]} (cohort), #{student[:hobby]} (hobby), #{student[:birth_country]}, #{student[:height]}cm"
-    index += 1
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if file.exist?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else 
+    puts "Sorry, #{filename} doesn't exist"
+    exit
   end
 end
-
-def print_footer(students)
-  puts "Overall, we have #{students.count} great students ".center(50)
-end 
-
-load_students
+  
+try_load_students
 interactive_menu
-students = input_students
-print_header
-print(students)
-print_footer(students)
-print_short_names(students)
+
 
 
