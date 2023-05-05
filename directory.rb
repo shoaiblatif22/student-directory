@@ -32,14 +32,19 @@ def input_students
   puts "To finish, just hit return twice"
   name = STDIN.gets.chomp 
   while !name.empty? do
-    puts "Enter #{name}'s hobby:"
-    hobby = gets.chomp
-    puts "Enter #{name}'s country of birth:"
-    birth_country = gets.chomp
-    puts "Enter #{name}'s height (in cm):"
-    height = gets.chomp
-    @students << {name: name, cohort: :november, hobby: hobby, birth_country: birth_country, height: height }
-    puts "Now we have #{@students.count} students"
+    puts "Enter #{name}'s cohort:"
+    cohort = STDIN.gets.chomp
+    cohort = :default if cohort.empty?
+    while !Date::MONTHNAMES.include?(cohort.capitalize) do
+      puts "Invalid cohort entered, please enter a valid month:"
+      cohort = STDIN.gets.chomp
+    end
+    @student << {name: name, cohort: cohort.to_sym}
+    if @students.count == 1
+      puts "now we have 1 student"
+    else 
+      puts "Now we have #{student.count} students"
+    end
     save_students
     name = STDIN.gets.chomp
   end
@@ -57,8 +62,14 @@ def print_header
 end 
 
 def print_students_list()
-  @students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  cohorts = @students.map {|student| student[:cohort]}.uniq
+  cohorts.each do |cohort|
+    puts "#{cohort} cohort:".center(50)
+    @students.each do |student|
+      if student[:cohort] == cohort
+        puts "#{student[:name]} (#{student[:cohort]} cohort)"
+      end
+    end
   end
 end 
 
