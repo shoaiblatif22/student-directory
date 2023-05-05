@@ -68,26 +68,9 @@ def print(students)
   end
 end
 
-
 def print_footer(students)
   puts "Overall, we have #{students.count} great students ".center(50)
-#its important that print() doesnt add new line characters
 end 
-
-=begin
-def print_short_names(students)
-  puts "Here is a list of students who have less than 12 characters in their name.".center(50)
-  index = 0
-  while index < students.length
-    student = students[index]
-    if student[:name].length < 12
-      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-    end
-    index += 1
-  end
-end
-=end
-
 
 interactive_menu
 students = input_students
@@ -95,12 +78,5 @@ print_header
 print(students)
 print_footer(students)
 print_short_names(students)
-
-
-=begin 
-puts "Please enter a letter to filter by:"
-letter = gets.chomp
-print_filtered(students, letter)
-=end
 
 
