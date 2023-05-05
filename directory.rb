@@ -1,9 +1,23 @@
 @students = []
 
+File.open("students.csv", "w")
+
+def load_students
+  if File.exist?("students.csv")
+      file = File.open("students.csv", "r")
+      file.readlines.each do |line|
+        name, cohort, hobby, birth_country, height = line.chomp.split(",")
+        @student << {name: name, cohort: cohort.to_sym}
+      end
+      file.close
+    end
+  end
+
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
   puts "9. Exit"
 end 
 
@@ -18,6 +32,7 @@ def process(selection)
   when "1" then input_students
   when "2" then print_students_list
   when "3" then save_students
+  when "4" then load_students
   when "9" then exit
   else
     puts "I don't know what you mean, try again"
@@ -49,12 +64,13 @@ def input_students
     height = gets.chomp
     @students << {name: name, cohort: :november, hobby: hobby, birth_country: birth_country, height: height }
     puts "Now we have #{@students.count} students"
+    save_students
     name = gets.chomp
   end
 end
 
 def save_students
-  file = File.open("students.csv", "w")
+  file = File.open("students.csv", "a")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -81,6 +97,7 @@ def print_footer(students)
   puts "Overall, we have #{students.count} great students ".center(50)
 end 
 
+load_students
 interactive_menu
 students = input_students
 print_header
